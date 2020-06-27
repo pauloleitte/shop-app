@@ -1,36 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/utils/app_routes.dart';
 import '../models/product.dart';
 
 class ProductItem extends StatelessWidget {
-  final Product product;
-  ProductItem(this.product);
-
   @override
   Widget build(BuildContext context) {
+    final Product product = Provider.of<Product>(context, listen: false);
+    final Cart cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
-          ),
           onTap: () {
             Navigator.of(context).pushNamed(
               AppRoutes.PRODUCT_DETAIL,
               arguments: product,
             );
           },
+          child: Image.network(
+            product.imageUrl,
+            fit: BoxFit.cover,
+          ),
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: IconButton(
-            icon: Icon(
-              Icons.favorite,
+          leading: Consumer<Product>(
+            builder: (ctx, product, _) => IconButton(
+              icon: Icon(
+                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
+              color: Theme.of(context).accentColor,
+              onPressed: () {
+                product.toggleFavorite();
+              },
             ),
-            onPressed: () {},
-            color: Theme.of(context).accentColor,
           ),
           title: Text(
             product.title,
@@ -38,8 +42,10 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
-            onPressed: () {},
-            color: Colors.green
+            color: Colors.green,
+            onPressed: () {
+              cart.addItem(product);
+            },
           ),
         ),
       ),
