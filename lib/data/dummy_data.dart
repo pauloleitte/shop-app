@@ -4,7 +4,7 @@ final DUMMY_PROODUCTS = [
   Product(
     id: 1,
     title: 'MacBook',
-    description: 'A red shirt - it is pretty red!',
+    description: 'Macbook Pro 256gb i5',
     price: 14000.50,
     imageUrl:
         'https://s2.glbimg.com/t2ABQz79TDGFXvVRlWRVJD1Ayx4=/0x0:1920x1080/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2019/v/t/Xdp5A8QVyxiQuJhIjWnw/pro1.png',

@@ -4,6 +4,7 @@ import 'package:shop_app/enums/filter_options.dart';
 import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/providers/product_provider.dart';
 import 'package:shop_app/utils/app_routes.dart';
+import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/badge.dart';
 import 'package:shop_app/widgets/product_grid.dart';
 
@@ -49,6 +50,7 @@ class ProductOverviewScreen extends StatelessWidget {
         ],
       ),
       body: ProductGrid(),
+      drawer: AppDrawer(),
     );
   }
 }
