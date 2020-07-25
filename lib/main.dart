@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
           AppRoutes.CART: (ctx) => CartScreen(),
           AppRoutes.ORDERS: (ctx) => OrdersScreen(),
-          AppRoutes.PRODUCTS: (ctx) => ProductsCreen(),
+          AppRoutes.PRODUCTS: (ctx) => ProductsScreen(),
           AppRoutes.PRODUCT_FORM: (cts) => ProductFormScreen(),
         },
       ),

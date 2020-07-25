@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import './product.dart';
 
 class CartItem {
-  final String id;
-  final int productId;
-  final String title;
-  final int quantity;
-  final double price;
+  String id;
+  String productId;
+  String title;
+  int quantity;
+  double price;
 
   CartItem({
     @required this.id,
@@ -17,12 +17,30 @@ class CartItem {
     @required this.quantity,
     @required this.price,
   });
+
+  CartItem.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    productId = json['productId'];
+    title = json['title'];
+    quantity = json['quantity'];
+    price = json['price'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['productId'] = this.productId;
+    data['title'] = this.title;
+    data['quantity'] = this.quantity;
+    data['price'] = this.price;
+    return data;
+  }
 }
 
 class Cart with ChangeNotifier {
-  Map<int, CartItem> _items = {};
+  Map<String, CartItem> _items = {};
 
-  Map<int, CartItem> get items {
+  Map<String, CartItem> get items {
     return {..._items};
   }
 
@@ -87,7 +105,7 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void removeItem(int productId) {
+  void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners();
   }

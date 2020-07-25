@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/models/orders.dart';
-import 'package:shop_app/widgets/cart_item_widget.dart';
+
+import '../widgets/cart_item_widget.dart';
 
 class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Cart cart = Provider.of(context);
     final cartItems = cart.items.values.toList();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Carrinho"),
+        title: Text('Carrinho'),
         centerTitle: true,
       ),
       body: Column(
@@ -21,51 +23,77 @@ class CartScreen extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(10),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('Total',
-                        style: TextStyle(
-                          fontSize: 20,
-                        )),
-                    SizedBox(width: 10),
-                    Chip(
-                      label: Text(
-                        "R\$ ${cart.totalAmount.toStringAsFixed(2)}",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Total',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(width: 10),
+                  Chip(
+                    label: Text(
+                      'R\$${cart.totalAmount}',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryTextTheme.title.color,
                       ),
-                      backgroundColor: Colors.green,
                     ),
-                    Spacer(),
-                    FlatButton(
-                      onPressed: () {
-                        Provider.of<Orders>(context, listen: false)
-                            .addOrder(cart);
-
-                        cart.clear();
-                      },
-                      child: Text(
-                        "COMPRAR",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      textColor: Theme.of(context).primaryColor,
-                    )
-                  ]),
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  Spacer(),
+                  OrderButton(cart: cart),
+                ],
+              ),
             ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(height: 10),
           Expanded(
             child: ListView.builder(
-                itemCount: cart.itemsCount,
-                itemBuilder: (ctx, i) => CartItemWidget(cartItems[i])),
+              itemCount: cart.itemsCount,
+              itemBuilder: (ctx, i) => CartItemWidget(cartItems[i]),
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key key,
+    @required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: _isLoading ? CircularProgressIndicator() : Text('COMPRAR'),
+      textColor: Theme.of(context).primaryColor,
+      onPressed: widget.cart.totalAmount == 0
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
+
+              await Provider.of<Orders>(context, listen: false)
+                  .addOrder(widget.cart);
+
+              setState(() {
+                _isLoading = false;
+              });
+
+              widget.cart.clear();
+            },
     );
   }
 }
