@@ -76,7 +76,13 @@ class _OrderButtonState extends State<OrderButton> {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      child: _isLoading ? CircularProgressIndicator() : Text('COMPRAR'),
+      child: _isLoading
+          ? CircularProgressIndicator(
+              backgroundColor: Colors.white,
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+            )
+          : Text('COMPRAR'),
       textColor: Theme.of(context).primaryColor,
       onPressed: widget.cart.totalAmount == 0
           ? null

@@ -18,7 +18,13 @@ class OrdersScreen extends StatelessWidget {
         future: Provider.of<Orders>(context, listen: false).loadOrders(),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.white,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor),
+              ),
+            );
           } else if (snapshot.error != null) {
             return Center(child: Text('Ocorreu um erro!'));
           } else {
